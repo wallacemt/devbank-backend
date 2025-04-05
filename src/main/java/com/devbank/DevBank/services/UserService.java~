@@ -1,0 +1,30 @@
+package com.devbank.DevBank.services;
+
+import com.devbank.DevBank.dtos.UserRegisterDTO;
+import com.devbank.DevBank.exeptions.CpfAlreadyRegisteredException;
+import com.devbank.DevBank.exeptions.EmailAlreadyRegisteredException;
+import com.devbank.DevBank.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Map;
+
+public class UserService {
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    public Map<String, String> userRegister(UserRegisterDTO data){
+        if(userRepository.findByEmail(data.getEmail()).isPresent()){
+            throw new EmailAlreadyRegisteredException("Emaill já resgistrado!");
+        }
+
+        if(userRepository.findByCpf(data.getCpf()).isPresent()){
+            throw  new CpfAlreadyRegisteredException("Cpf já registrado!");
+        }
+
+        String encriptedPassword = password
+    }
+}

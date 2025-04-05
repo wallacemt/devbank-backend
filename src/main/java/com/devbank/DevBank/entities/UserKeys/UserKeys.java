@@ -31,6 +31,12 @@ public class UserKeys {
     @Column(nullable = false)
     private UserKeyType keyType;
 
+    public UserKeys(Account account, UserKeyType keyType, String keyValue) {
+        this.account = account;
+        this.keyType = keyType;
+        this.keyValue = keyValue;
+    }
+
     @NotBlank
     @Column(nullable = false, unique = true)
     private String keyValue;

@@ -1,0 +1,48 @@
+package com.devbank.DevBank.services;
+
+import com.devbank.DevBank.exeptions.SendEmailError;
+import com.devbank.DevBank.ultilis.EmailType;
+import jakarta.mail.internet.MimeMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
+
+@Service
+public class EmailService {
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    @Autowired
+    EmailTemplateService emailTemplateService;
+
+    @Value("${spring.mail.username}")
+    private String emailRemetente;
+
+
+    public EmailService() {
+    }
+
+    public void enviarEmailHtml(String to, String subject, EmailType type, Map<String, String> variables) {
+        try {
+            String htmlContent = emailTemplateService.getTemplate(type, variables);
+
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(emailRemetente);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+
+            javaMailSender.send(message);
+        } catch (Exception e) {
+            throw new SendEmailError("Erro ao enviar e-mail: " + e.getMessage());
+        }
+    }
+
+
+}

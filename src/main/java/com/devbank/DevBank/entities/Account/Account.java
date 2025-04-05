@@ -34,4 +34,8 @@ public class Account {
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    public Account(User user) {
+        this.user = user;
+    }
 }

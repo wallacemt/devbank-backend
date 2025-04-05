@@ -1,0 +1,91 @@
+package com.devbank.DevBank.services;
+
+import com.devbank.DevBank.dtos.UserRegisterDTO;
+import com.devbank.DevBank.entities.Account.Account;
+import com.devbank.DevBank.entities.User.User;
+import com.devbank.DevBank.entities.UserKeys.UserKeyType;
+import com.devbank.DevBank.entities.UserKeys.UserKeys;
+import com.devbank.DevBank.exeptions.CpfAlreadyRegisteredException;
+import com.devbank.DevBank.exeptions.EmailAlreadyRegisteredException;
+import com.devbank.DevBank.exeptions.PasswordsDoNotMatchException;
+import com.devbank.DevBank.repositories.AccountRepository;
+import com.devbank.DevBank.repositories.UserKeysRepository;
+import com.devbank.DevBank.repositories.UserRepository;
+import com.devbank.DevBank.ultilis.EmailType;
+import jakarta.transaction.Transactional;
+import org.apache.tomcat.util.json.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+@Service
+public class UserAuthService {
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    AccountRepository accountRepository;
+
+    @Autowired
+    EmailService emailService;
+
+    @Autowired
+    UserKeysRepository userKeysRepository;
+
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    public Map<String, String> userRegister(UserRegisterDTO data){
+        if(userRepository.findByEmail(data.getEmail()).isPresent()){
+            throw new EmailAlreadyRegisteredException("Emaill já resgistrado!");
+        }
+
+        if(userRepository.findByCpf(data.getCpf()).isPresent()){
+            throw  new CpfAlreadyRegisteredException("Cpf já registrado!");
+        }
+        if (!data.getPassword().equals(data.getPasswordConfirmation())) {
+            throw new PasswordsDoNotMatchException("As senhas não coincidem!");
+        }
+
+
+        String encriptedPassword = passwordEncoder.encode(data.getPassword());
+
+        User newUser = new User(
+                data.getName(),
+                data.getEmail(),
+                data.getCpf(),
+                encriptedPassword
+        );
+
+        Account newUserAccount = new Account(newUser);
+
+        Map<String, String> variables = new HashMap<>();
+        variables.put("nome", newUser.getName());
+
+        emailService.enviarEmailHtml(
+                newUser.getEmail(),
+                "Bem-vindo ao DevBank 🚀",
+                EmailType.WELCOME,
+                variables
+        );
+        userRepository.save(newUser);
+        accountRepository.save(newUserAccount);
+
+
+
+        UserKeys userKeysCpf = new UserKeys(newUserAccount, UserKeyType.CPF, newUser.getCpf());
+        UserKeys userKeysMail = new UserKeys(newUserAccount, UserKeyType.EMAIL, newUser.getEmail());
+        userKeysRepository.save(userKeysCpf);
+        userKeysRepository.save(userKeysMail);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Usuário registrado com sucesso!");
+        return response;
+    }
+}
