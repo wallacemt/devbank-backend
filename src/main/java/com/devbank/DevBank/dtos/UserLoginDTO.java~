@@ -1,0 +1,4 @@
+package com.devbank.DevBank.dtos;
+
+public class UserLoginDTO {
+}
