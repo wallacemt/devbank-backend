@@ -21,7 +21,7 @@ public class EmailTemplateService {
                 case SUSPECT_ACTIVITY -> template = Files.readString(Path.of("src/main/resources/templates/suspect_activity.html"));
             }
 
-
+            // Substituir variáveis no template (ex: ${nome} → Wallace)
             for (Map.Entry<String, String> entry : variables.entrySet()) {
                 template = template.replace("${" + entry.getKey() + "}", entry.getValue());
             }

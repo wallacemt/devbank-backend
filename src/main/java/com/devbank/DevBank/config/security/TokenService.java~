@@ -24,7 +24,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("API devbank-login")
                     .withSubject(usuario.getUsername())
-                    .withSubject(usuario.getId().toString())
+                    .withSubject(usuario.getCpf())
                     .withExpiresAt(expirationInstant)
                     .sign(algorithm);
         }catch (JWTCreationException exception){

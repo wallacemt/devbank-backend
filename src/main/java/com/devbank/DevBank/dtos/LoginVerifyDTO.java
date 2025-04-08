@@ -10,11 +10,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginDTO {
+public class LoginVerifyDTO {
 
     @NotBlank(message = "Email ou CPF obrigatório")
-    private String emailOrCpf;
+    public String emailOrCpf;
 
-    @NotBlank(message = "Senha obrigatória")
-    private String password;
+    @NotBlank(message = "Token obrigatório")
+    public String token;
 }
