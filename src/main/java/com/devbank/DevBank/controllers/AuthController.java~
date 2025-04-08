@@ -72,7 +72,6 @@ public class AuthController {
             userAuthService.resend2FACode(body.get("emailOrCpf"));
             return ResponseEntity.status(200).body(Map.of("message", "Novo código 2FA enviado com sucesso!"));
         }catch (Exception e){
-            System.out.println(e);
            return  ResponseEntity.status(500).body(Map.of("error","Erro ao enviar código de verificação."));
         }
     }
