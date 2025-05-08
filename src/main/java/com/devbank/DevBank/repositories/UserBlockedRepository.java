@@ -11,4 +11,6 @@ import java.util.UUID;
 @Repository
 public interface UserBlockedRepository extends JpaRepository<UserBlocked, UUID> {
     Optional<UserBlocked> findByUser(User user);
+    Optional<UserBlocked> findByIpAddress(String ipAddress);
+
 }
