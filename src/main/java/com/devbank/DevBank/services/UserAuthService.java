@@ -1,6 +1,7 @@
 package com.devbank.DevBank.services;
 
 import com.devbank.DevBank.config.security.TokenService;
+import com.devbank.DevBank.dtos.EmailOrCpfVerificationDTO;
 import com.devbank.DevBank.dtos.LoginDTO;
 import com.devbank.DevBank.dtos.LoginVerifyDTO;
 import com.devbank.DevBank.dtos.UserRegisterDTO;
@@ -100,9 +101,20 @@ public class UserAuthService {
     }
 
 
-    public Map<String, String> loginUser(LoginDTO data) {
+    public Map<String, String> loginUser(LoginDTO data, String ipAddress) {
         User user = userRepository.findByEmailOrCpf(data.getEmailOrCpf(), data.getEmailOrCpf())
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado, Email Ou Cpf Incorreto!"));
+
+        Optional<UserBlocked> ipBlockedOpt = userBlockedRepository.findByIpAddress(ipAddress);
+        if (ipBlockedOpt.isPresent()) {
+            UserBlocked blocked = ipBlockedOpt.get();
+            if (blocked.getUnlockedTime().isAfter(LocalDateTime.now())) {
+                Duration dur = Duration.between(LocalDateTime.now(), blocked.getUnlockedTime());
+                throw new AccountBlockedException("IP bloqueado. Tente novamente em " + dur.toMinutes() + " minutos.");
+            } else {
+                userBlockedRepository.delete(blocked);
+            }
+        }
 
         Optional<UserBlocked> userBlockedOpt = userBlockedRepository.findByUser(user);
         if (userBlockedOpt.isPresent()) {
@@ -122,6 +134,7 @@ public class UserAuthService {
             if (falhas >= 3) {
                 UserBlocked userBlocked = new UserBlocked();
                 userBlocked.setUser(user);
+                userBlocked.setIpAddress(ipAddress);
                 userBlocked.setUnlockedTime(LocalDateTime.now().plusHours(1));
                 userBlockedRepository.save(userBlocked);
 
@@ -142,16 +155,6 @@ public class UserAuthService {
 
         tentativas.remove(user.getEmail());
 
-        Optional<VerifyUser> existingVerify = verifyUserRepository
-                .findFirstByUserAndIsValidTrueOrderByCreatedAtDesc(user);
-
-        if (existingVerify.isPresent() && existingVerify.get().getExpiresAt().isAfter(LocalDateTime.now())) {
-            throw new VerifyCodeHasSendingException(
-                    "Código de verificação já foi enviado. Verifique seu email ou pasta de spam."
-            );
-        }
-
-
         String token = generateCode();
         VerifyUser verifyUser = new VerifyUser();
 
@@ -170,7 +173,7 @@ public class UserAuthService {
                 variables
         );
 
-        return Map.of("message", "Código de verificação enviado");
+        return Map.of("message", "Código de verificação enviado", "email", user.getEmail());
     }
 
     public String generateCode() {
@@ -202,7 +205,7 @@ public class UserAuthService {
     }
 
     public Map<String, String> resend2FACode(String credential) {
-        User user = userRepository.findByEmailOrCpf(credential,credential)
+        User user = userRepository.findByEmailOrCpf(credential, credential)
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
 
@@ -228,9 +231,17 @@ public class UserAuthService {
         return Map.of("message", "Código de verificação enviado");
     }
 
-    public boolean verifyEmailOrCpf(String data){
-        Optional<User> user = userRepository.findByEmailOrCpf(data,data);
-        if(user.isPresent()){
+    public boolean EmailOrCpfVerifications(EmailOrCpfVerificationDTO data) {
+        Optional<User> user = userRepository.findByEmailOrCpf(data.getEmailOrCpf(), data.getEmailOrCpf());
+        if (user.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean verifyEmailOrCpf(String data) {
+        Optional<User> user = userRepository.findByEmailOrCpf(data, data);
+        if (user.isPresent()) {
             return true;
         }
         return false;

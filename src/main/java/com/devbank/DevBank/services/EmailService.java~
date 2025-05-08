@@ -39,6 +39,7 @@ public class EmailService {
             javaMailSender.send(message);
         } catch (Exception e) {
             System.out.println(e);
+            System.out.println(emailRemetente);
             throw new SendEmailError("Erro ao enviar e-mail: " + e.getMessage());
         }
     }

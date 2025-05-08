@@ -23,8 +23,5 @@ public class UserBlocked {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-
-    private String ipAddress;
-
     private LocalDateTime unlockedTime;
 }
