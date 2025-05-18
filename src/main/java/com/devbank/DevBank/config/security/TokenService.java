@@ -35,7 +35,7 @@ public class TokenService {
     }
 
     public String generateToken(User usuario) {
-        long defaultExpirationTime = Duration.ofHours(3).toMillis();
+        long defaultExpirationTime = Duration.ofDays(1).toMillis();
 
         return generateToken(usuario, defaultExpirationTime);
     }
