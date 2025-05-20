@@ -1,0 +1,4 @@
+package com.devbank.DevBank.controllers;
+
+public class DocsController {
+}

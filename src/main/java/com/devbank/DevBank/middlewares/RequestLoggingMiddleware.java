@@ -43,6 +43,7 @@ public class RequestLoggingMiddleware extends OncePerRequestFilter {
         logger.info("✅ Status: {}", response.getStatus());
         logger.info("🔹 Data/Hora: {}", LocalDateTime.now());
         logger.info("⏳ Tempo de execução: {} ms", duration);
+
     }
 
 
