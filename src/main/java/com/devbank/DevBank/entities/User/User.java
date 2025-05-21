@@ -54,10 +54,7 @@ public class User implements UserDetails {
     @JsonManagedReference
     private UserProfile profile;
 
-\
     private LocalDateTime createdAt = LocalDateTime.now();
-
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
