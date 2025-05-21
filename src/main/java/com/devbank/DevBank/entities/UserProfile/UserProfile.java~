@@ -1,7 +1,6 @@
 package com.devbank.DevBank.entities.UserProfile;
 
 import com.devbank.DevBank.entities.User.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -25,7 +24,7 @@ public class UserProfile {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
-    @JsonBackReference
+    @Json
     private User user;
 
     private String socialName;

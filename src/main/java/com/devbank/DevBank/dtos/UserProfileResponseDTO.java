@@ -1,6 +1,7 @@
 package com.devbank.DevBank.dtos;
 
 import com.devbank.DevBank.entities.UserAddress.UserAddress;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,8 @@ import java.util.Date;
 public class UserProfileResponseDTO {
     public UserAddressResponseDTO address;
     public String socialName;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     public Date birthDate;
     public String gender;
     public String maritalStatus;

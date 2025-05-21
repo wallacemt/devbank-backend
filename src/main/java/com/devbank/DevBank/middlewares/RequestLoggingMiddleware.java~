@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class RequestLoggingMiddleware extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestLoggingMiddleware.class);
-
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Instant start = Instant.now();
@@ -32,17 +32,19 @@ public class RequestLoggingMiddleware extends OncePerRequestFilter {
 
         CachedBodyHttpServetResponse responseWrapper = new CachedBodyHttpServetResponse(response);
         filterChain.doFilter(request, responseWrapper);
-        if(!request.getRequestURI().contains("swagger") || !request.getRequestURI().contains("h2-console") || !request.getRequestURI().contains("v3/api-docs")) {
-            String responseBody = responseWrapper.getBody();
-            logger.info("📌 Corpo capturado: {}", responseBody);
 
-            Instant end = Instant.now();
-            long duration = Duration.between(start, end).toMillis();
+        String responseBody = responseWrapper.getBody();
+        logger.info("📌 Corpo capturado: {}", responseBody);
 
-            logger.info("========== [Resposta Enviada] ==========");
-            logger.info("✅ Status: {}", response.getStatus());
-            logger.info("🔹 Data/Hora: {}", LocalDateTime.now());
-            logger.info("⏳ Tempo de execução: {} ms", duration);
-        };
+        Instant end = Instant.now();
+        long duration = Duration.between(start, end).toMillis();
+
+        logger.info("========== [Resposta Enviada] ==========");
+        logger.info("✅ Status: {}", response.getStatus());
+        logger.info("🔹 Data/Hora: {}", LocalDateTime.now());
+        logger.info("⏳ Tempo de execução: {} ms", duration);
+
     }
+
+
 }
