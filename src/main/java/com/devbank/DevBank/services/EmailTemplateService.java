@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import org.springframework.core.io.ClassPathResource;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
 
 @Service
 public class EmailTemplateService {
