@@ -42,7 +42,12 @@ public class RequestLoggingMiddleware extends OncePerRequestFilter {
         filterChain.doFilter(request, responseWrapper);
 
         String responseBody = responseWrapper.getBody();
-        logger.info("📌 Corpo capturado: {}", responseBody);
+        if (responseBody.length() < 1000) {
+            logger.info("📌 Corpo capturado: {}", responseBody);
+        } else {
+            logger.info("📌 Corpo capturado: [corpo omitido: tamanho excede 1KB]");
+        }
+
 
         Instant end = Instant.now();
         long duration = Duration.between(start, end).toMillis();
