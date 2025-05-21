@@ -2,6 +2,7 @@ package com.devbank.DevBank.entities.UserProfile;
 
 import com.devbank.DevBank.entities.User.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,20 +28,28 @@ public class UserProfile {
 
     private String socialName;
 
+    @NotBlank
     private Date birthDate;
 
+    @NotBlank
     private String gender;
 
+    @NotBlank
     private String maritalStatus;
 
+    @NotBlank
     private String income;
 
+    @NotBlank
     private String employmentStatus;
 
+    @NotBlank
     private String occupation;
 
+    @NotBlank
     private String company;
 
+    @NotBlank
     private String education;
 
     public UserProfile(User user, String socialName, Date birthDate, String gender, String maritalStatus, String income, String employmentStatus, String occupation, String company, String education) {

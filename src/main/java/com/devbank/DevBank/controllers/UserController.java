@@ -5,6 +5,8 @@ import com.devbank.DevBank.dtos.UserProfileRequestDTO;
 import com.devbank.DevBank.dtos.UserRegisterDTO;
 import com.devbank.DevBank.entities.User.User;
 import com.devbank.DevBank.entities.UserProfile.UserProfile;
+import com.devbank.DevBank.exeptions.BonusHasReclaimException;
+import com.devbank.DevBank.exeptions.IncompleteProfileException;
 import com.devbank.DevBank.exeptions.PerfilAlreadyRegisteredException;
 import com.devbank.DevBank.services.ProfileService;
 import com.devbank.DevBank.services.UserService;
@@ -36,13 +38,26 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<?> postUserProfile(@AuthenticationPrincipal User user, @Valid @RequestBody UserProfileRequestDTO data) {
+    public ResponseEntity<?> postUserProfile(@AuthenticationPrincipal User user, @RequestBody UserProfileRequestDTO data) {
         try {
             return ResponseEntity.ok(profileService.createUserProfile(user, data));
         } catch (PerfilAlreadyRegisteredException e) {
             return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("error", "Erro interno do servidor: " + e.getMessage()));
+        }
+    }
+
+    @PostMapping("/reclaim-bonus")
+    public ResponseEntity<?> userReclaimBonus(@AuthenticationPrincipal User user) {
+        try {
+            return ResponseEntity.ok(userService.reclaimBonus(user));
+        } catch (IncompleteProfileException e) {
+            return ResponseEntity.status(403).body(Map.of("error", e.getMessage()));
+        } catch (BonusHasReclaimException e) {
+            return ResponseEntity.status(409).body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
         }
     }
 }

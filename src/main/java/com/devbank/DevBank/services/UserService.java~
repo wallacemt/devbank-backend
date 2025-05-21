@@ -62,8 +62,8 @@ public class UserService {
             throw new IncompleteProfileException("Perfil Incompleto! condição para resgatar não atendida!");
         }
 
-        UserBonus userBonus = new UserBonus(user, 250.00);
-        account.setBalance(account.getBalance() + 250.00);
+        UserBonus userBonus = new UserBonus(user, 250.0);
+        account.setBalance(account.getBalance() + 250.0);
         userBonusRepository.save(userBonus);
         accountRepository.save(account);
 

@@ -37,4 +37,13 @@ public class UserAddress {
     @Column(nullable = false)
     private String state;
 
+    public UserAddress(User user, String cep, String street, String number, String complement, String city, String state) {
+        this.user = user;
+        this.cep = cep;
+        this.street = street;
+        this.number = number;
+        this.complement = complement;
+        this.city = city;
+        this.state = state;
+    }
 }

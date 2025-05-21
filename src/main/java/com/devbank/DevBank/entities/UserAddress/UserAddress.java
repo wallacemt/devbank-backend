@@ -2,6 +2,7 @@ package com.devbank.DevBank.entities.UserAddress;
 
 import com.devbank.DevBank.entities.User.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,18 +24,18 @@ public class UserAddress {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
-
-
-    @Column(nullable = false)
+    @NotBlank
     private String cep;
-
-    @Column(nullable = false)
+    @NotBlank
     private String street;
+    @NotBlank
     private String number;
+
     private String complement;
-    @Column(nullable = false)
+
+    @NotBlank
     private String city;
-    @Column(nullable = false)
+    @NotBlank
     private String state;
 
     public UserAddress(User user, String cep, String street, String number, String complement, String city, String state) {

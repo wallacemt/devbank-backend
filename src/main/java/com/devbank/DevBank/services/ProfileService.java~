@@ -34,7 +34,7 @@ public class ProfileService {
     @Qualifier("passwordEncoderV2")
     private PasswordEncoder passwordEncoderV2;
 
-    public UserProfileResponseDTO   getUserProfile(User user) {
+    public UserProfileResponseDTO getUserProfile(User user) {
         Optional<UserProfile> userProfileOpt = userProfileRepository.findByUser(user);
         Optional<UserAddress> userAddressOpt = userAddressRepository.findByUser(user);
 

@@ -1,0 +1,4 @@
+package com.devbank.DevBank.repositories;
+
+public interface UserBonusRepository {
+}
