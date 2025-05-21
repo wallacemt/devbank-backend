@@ -11,16 +11,15 @@ import java.util.Map;
 @Service
 public class EmailTemplateService {
 
-    public String getTemplate(EmailType type, Map<String, String> variables) {
-        String template = "";
+     public String getTemplate(EmailType type, Map<String, String> variables) {
+        String templatePath = switch (type) {
+            case WELCOME -> "templates/welcome.html";
+            case VERIFICATION_CODE -> "templates/verification_code.html";
+            case SUSPECT_ACTIVITY -> "templates/suspect_activity.html";
+        };
 
-        try {
-            switch (type) {
-                case WELCOME -> template = Files.readString(Path.of("src/main/resources/templates/welcome.html"));
-                case VERIFICATION_CODE -> template = Files.readString(Path.of("src/main/resources/templates/verification_code.html"));
-                case SUSPECT_ACTIVITY -> template = Files.readString(Path.of("src/main/resources/templates/suspect_activity.html"));
-            }
-
+        try (InputStream inputStream = new ClassPathResource(templatePath).getInputStream()) {
+            String template = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 
             for (Map.Entry<String, String> entry : variables.entrySet()) {
                 template = template.replace("${" + entry.getKey() + "}", entry.getValue());
