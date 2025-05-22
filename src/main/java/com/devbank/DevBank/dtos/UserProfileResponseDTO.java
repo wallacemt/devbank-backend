@@ -14,18 +14,18 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfileResponseDTO {
-    public UserAddressResponseDTO address;
-    public String socialName;
+    private UserAddressResponseDTO address;
+    private String socialName;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    public Date birthDate;
-    public String gender;
-    public String maritalStatus;
-    public String income;
-    public String employmentStatus;
-    public String occupation;
-    public String company;
-    public String education;
+    private Date birthDate;
+    private String gender;
+    private String maritalStatus;
+    private String income;
+    private String employmentStatus;
+    private String occupation;
+    private String company;
+    private String education;
 
     public UserProfileResponseDTO(UserAddress userAddress, String socialName, Date birthDate, String gender, String maritalStatus, String income, String employmentStatus, String occupation, String company, String education) {
         this.address = new UserAddressResponseDTO(userAddress.getCep(), userAddress.getStreet(), userAddress.getNumber(), userAddress.getComplement(), userAddress.getCity(), userAddress.getState());

@@ -14,23 +14,24 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserRegisterDTO {
     @NotBlank
-    @Size(max = 255) String name;
+    @Size(max = 255)
+    private String name;
 
     @NotBlank
     @Size(max = 255, message = "O email não pode ultrapassar 255 caracteres")
     @Email(message = "O email informado é inválido")
-    String email;
+    private String email;
 
     @NotBlank
     @Size(min = 11, max = 11)
-    String cpf;
+    private String cpf;
 
     @NotBlank(message = "A senha é obrigatória.")
     @Size(min = 8, message = "A senha deve ter pelo menos 8 caracteres")
-    String password;
+    private String password;
 
     @NotBlank(message = "A confirmação de senha é obrigatória.")
-    String passwordConfirmation;
+    private String passwordConfirmation;
 
 
 }

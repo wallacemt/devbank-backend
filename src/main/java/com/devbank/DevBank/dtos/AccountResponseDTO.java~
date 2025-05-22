@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountResponseDTO {
-    private UUID accountId;
-    private Double balance;
-    private LocalDateTime createdAt;
+    public UUID accountId;
+    public Double balance;
+    public LocalDateTime createdAt;
 }

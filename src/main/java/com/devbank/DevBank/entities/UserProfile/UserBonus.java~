@@ -1,7 +1,6 @@
 package com.devbank.DevBank.entities.UserProfile;
 
 import com.devbank.DevBank.entities.User.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +23,6 @@ public class UserBonus {
     private UUID id;
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
-    @JsonBackReference
     private User user;
 
     @Column(nullable = false)

@@ -13,6 +13,8 @@ import com.devbank.DevBank.repositories.UserBonusRepository;
 import com.devbank.DevBank.repositories.UserProfileRepository;
 import com.devbank.DevBank.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -35,6 +37,10 @@ public class UserService {
 
     @Autowired
     private UserBonusRepository userBonusRepository;
+
+    @Autowired
+    @Qualifier("passwordEncoderV2")
+    private PasswordEncoder passwordEncoderV2;
 
     public UserDTO getUser(User user) {
         Optional<User> userOpt = userRepository.findById(user.getId());

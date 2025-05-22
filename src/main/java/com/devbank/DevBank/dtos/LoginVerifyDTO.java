@@ -13,8 +13,8 @@ import lombok.Setter;
 public class LoginVerifyDTO {
 
     @NotBlank(message = "Email ou CPF obrigatório")
-    public String emailOrCpf;
+    private String emailOrCpf;
 
     @NotBlank(message = "Token obrigatório")
-    public String token;
+    private String token;
 }

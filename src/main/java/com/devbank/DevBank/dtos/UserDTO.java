@@ -15,12 +15,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-    public UUID id;
-    public String name;
-    public String email;
-    public String cpf;
-    public AccountResponseDTO account;
-    public UserProfileResponseDTO profile;
+    private UUID id;
+    private String name;
+    private String email;
+    private String cpf;
+    private AccountResponseDTO account;
+    private UserProfileResponseDTO profile;
 
     public UserDTO(User user, Account account, UserProfileResponseDTO profile) {
         this.id = user.getId();

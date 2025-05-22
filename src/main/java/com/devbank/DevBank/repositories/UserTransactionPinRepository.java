@@ -11,5 +11,5 @@ import java.util.UUID;
 
 @Repository
 public interface UserTransactionPinRepository extends JpaRepository<UserTransactionPin, UUID> {
-    public Optional<UserTransactionPin> findByUser(User user);
+    public UserTransactionPin findByUser(User user);
 }

@@ -37,7 +37,20 @@ public class Transactions {
     @Column(nullable = false)
     private TransactionStatus status;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TransactionType type;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime timestamp;
+
+
+    public Transactions(Account senderAccount, Account receiverAccount, Double amount, TransactionStatus status, TransactionType type) {
+        this.senderAccount = senderAccount;
+        this.receiverAccount = receiverAccount;
+        this.amount = amount;
+        this.status = status;
+        this.type = type;
+    }
 }

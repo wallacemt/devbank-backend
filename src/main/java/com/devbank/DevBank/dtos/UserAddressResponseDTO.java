@@ -13,12 +13,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public  class UserAddressResponseDTO {
-    public String cep;
-    public String street;
-    public String number;
-    public String complement;
-    public String city;
-    public String state;
+    private String cep;
+    private String street;
+    private String number;
+    private String complement;
+    private String city;
+    private String state;
 
     public UserAddressResponseDTO(UserAddress userAddress) {
         this.cep = userAddress.getCep();
