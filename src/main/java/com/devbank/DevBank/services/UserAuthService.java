@@ -10,7 +10,6 @@ import com.devbank.DevBank.entities.User.User;
 import com.devbank.DevBank.entities.UserBlocked.UserBlocked;
 import com.devbank.DevBank.entities.UserKeys.UserKeyType;
 import com.devbank.DevBank.entities.UserKeys.UserKeys;
-import com.devbank.DevBank.entities.VerifyUser.VerifyUser;
 import com.devbank.DevBank.exeptions.*;
 import com.devbank.DevBank.repositories.*;
 import com.devbank.DevBank.ultilis.EmailType;
@@ -39,6 +38,8 @@ public class UserAuthService {
 
     @Autowired
     private UserKeysRepository userKeysRepository;
+    @Autowired
+    private CodeGeneratorService codeGeneratorService;
 
     @Autowired
     @Qualifier("passwordEncoder")
@@ -48,10 +49,10 @@ public class UserAuthService {
     private UserBlockedRepository userBlockedRepository;
 
     @Autowired
-    private VerifyUserRepository verifyUserRepository;
+    private TokenService tokenService;
 
     @Autowired
-    private TokenService tokenService;
+    private EmailVerifyService emailVerifyService;
 
     private final Map<String, Integer> tentativas = new HashMap<>();
 
@@ -157,52 +158,25 @@ public class UserAuthService {
 
         tentativas.remove(user.getEmail());
 
-        String token = generateCode();
-        VerifyUser verifyUser = new VerifyUser();
+        emailVerifyService.generate2FACode(user);
 
-        verifyUser.setUser(user);
-        verifyUser.setToken(token);
-        verifyUser.setExpiresAt(LocalDateTime.now().plusMinutes(10));
-        verifyUserRepository.save(verifyUser);
-
-        Map<String, String> variables = new HashMap<>();
-        variables.put("nome", user.getName());
-        variables.put("codigo", token);
-        emailService.enviarEmailHtml(
-                user.getEmail(),
-                "2FA User Verify 🔏",
-                EmailType.VERIFICATION_CODE,
-                variables
-        );
 
         return Map.of("message", "Código de verificação enviado", "email", user.getEmail());
     }
 
-    public String generateCode() {
-        return String.format("%06d", (int) (Math.random() * 1000000));
-    }
 
     public Map<String, String> verifyCodeAndFinishLogin(LoginVerifyDTO data) {
 
         User user = userRepository.findByEmailOrCpf(data.getEmailOrCpf(), data.getEmailOrCpf())
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
-
-        VerifyUser codigo = verifyUserRepository
-                .findFirstByUserAndTokenAndIsValidTrueOrderByCreatedAtDesc(user, data.getToken())
-                .orElseThrow(() -> new InvalidCodeException("Código de verificação inválido."));
-
-        if (codigo.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new InvalidCodeException("Código expirado");
-        }
-
-        codigo.setIsValid(false);
-        verifyUserRepository.save(codigo);
-
+        emailVerifyService.validCode(user.getEmail(), data.getToken());
         String tokenJwt = tokenService.generateToken(user);
-
         Map<String, String> response = new HashMap<>();
         response.put("token", tokenJwt);
-        response.put("message", "Bem-vindo(a), " + user.getName() + "!");
+        String[] names = user.getName().split(" ");
+        String firstName = names[0];
+        String lastName = names[names.length - 1];
+        response.put("message", "Bem-vindo(a), " + firstName + " " + lastName + "!");
         return response;
     }
 
@@ -210,28 +184,11 @@ public class UserAuthService {
         User user = userRepository.findByEmailOrCpf(credential, credential)
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
+        emailVerifyService.invalidateCode(user.getEmail());
 
-        verifyUserRepository.invalidateAllByUserId(user.getId());
-        String newCode = generateCode();
-
-        VerifyUser newVerify = new VerifyUser();
-        newVerify.setUser(user);
-        newVerify.setToken(newCode);
-        newVerify.setExpiresAt(LocalDateTime.now().plusMinutes(10));
-        verifyUserRepository.saveAndFlush(newVerify);
-
-        Map<String, String> variables = new HashMap<>();
-        variables.put("nome", user.getName());
-        variables.put("codigo", newCode);
-        emailService.enviarEmailHtml(
-                user.getEmail(),
-                "2FA User Verify 🔏",
-                EmailType.VERIFICATION_CODE,
-                variables
-        );
-
-        return Map.of("message", "Código de verificação enviado");
+        return emailVerifyService.generate2FACode(user);
     }
+
 
     public boolean EmailOrCpfVerifications(EmailOrCpfVerificationDTO data) {
         Optional<User> user = userRepository.findByEmailOrCpf(data.getEmailOrCpf(), data.getEmailOrCpf());

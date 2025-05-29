@@ -1,6 +1,8 @@
 package com.devbank.DevBank.services;
 
+import com.devbank.DevBank.entities.User.User;
 import com.devbank.DevBank.exeptions.InvalidCodeException;
+import com.devbank.DevBank.repositories.UserRepository;
 import com.devbank.DevBank.ultilis.EmailType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -10,25 +12,37 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class EmailVerifyService {
-    private  final Map<String, EmailCodeData> codeStore = new ConcurrentHashMap<>();
+    private final Map<String, EmailCodeData> codeStore = new ConcurrentHashMap<>();
 
     @Autowired
     private EmailService emailService;
-
     @Autowired
-    private UserAuthService userAuthService;
+    private CodeGeneratorService codeGeneratorService;
+    @Autowired
+    private UserRepository userRepository;
 
-    public Map<String, String> generateAndStoreCode(String email, String name){
-        if(userAuthService.verifyEmailOrCpf(email)){
+    public boolean verifyEmailOrCpf(String data) {
+        Optional<User> user = userRepository.findByEmailOrCpf(data, data);
+        if (user.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
+
+    public Map<String, String> generateAndStoreCode(String email, String name) {
+        if (verifyEmailOrCpf(email)) {
             throw new DuplicateKeyException("Email já em uso!");
         }
         invalidateCode(email);
-        String code = userAuthService.generateCode();
+        String code = codeGeneratorService.generateCode();
+
         LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(10);
 
         codeStore.put(email, new EmailCodeData(code, expiresAt));
@@ -45,27 +59,45 @@ public class EmailVerifyService {
         return Map.of("message", "Código de verificação enviado");
     }
 
-    public void validCode(String email, String inputCode){
+    public void validCode(String email, String inputCode) {
         EmailCodeData data = codeStore.get(email);
 
-        if(data == null){
+        if (data == null) {
             throw new InvalidCodeException("Código de verificação expirado ou inválido");
         }
-        if(data.getExpiresAt().isBefore(LocalDateTime.now())){
+        if (data.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new InvalidCodeException("Código de verificação expirado");
         }
 
-        if(!data.getCode().equals(inputCode)){
+        if (!data.getCode().equals(inputCode)) {
             throw new InvalidCodeException("Código de verificação inválido");
         }
 
         invalidateCode(email);
     }
 
-    public void invalidateCode(String email){
+    public void invalidateCode(String email) {
         codeStore.remove(email);
     }
 
+    public Map<String, String> generate2FACode(User user) {
+        String email = user.getEmail();
+        invalidateCode(email);
+        String code = codeGeneratorService.generateCode();
+        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(10);
+        codeStore.put(email, new EmailCodeData(code, expiresAt));
+
+        Map<String, String> variables = new HashMap<>();
+        variables.put("nome", user.getName());
+        variables.put("codigo", code);
+        emailService.enviarEmailHtml(
+                email,
+                "2FA User Verify 🔏",
+                EmailType.VERIFICATION_CODE,
+                variables
+        );
+        return Map.of("message", "Código de verificação enviado", "email", email);
+    }
 
     private static class EmailCodeData {
         private final String code;

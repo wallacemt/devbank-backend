@@ -1,6 +1,7 @@
 package com.devbank.DevBank.services;
 
 import com.devbank.DevBank.dtos.UserByKeyResponseDTO;
+import com.devbank.DevBank.dtos.UserKeyRequestDTO;
 import com.devbank.DevBank.entities.Account.Account;
 import com.devbank.DevBank.entities.Transactions.TransactionStatus;
 import com.devbank.DevBank.entities.Transactions.TransactionType;
@@ -43,8 +44,8 @@ public class TransactionsService {
     private PasswordEncoder passwordEncoderV2;
 
 
-    public UserByKeyResponseDTO getUserByKey(String key) {
-        Optional<UserKeys> userKeys = userKeysRepository.findByKeyValue(key);
+    public UserByKeyResponseDTO getUserByKey(UserKeyRequestDTO key) {
+        Optional<UserKeys> userKeys = userKeysRepository.findByKeyValue(key.getUserKey());
         if (userKeys.isEmpty()) {
             throw new UserByKeyNotFound("Chave Pix não encontrada!");
         }
