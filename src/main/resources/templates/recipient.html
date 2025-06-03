@@ -12,7 +12,7 @@
 
         .container {
             max-width: 700px;
-            margin: 40px auto;
+            margin: 10px auto;
             background-color: #ffffff;
             border-radius: 16px;
             padding: 40px;
@@ -23,16 +23,14 @@
         .logo {
             display: block;
             margin: 0 auto;
-            width: 220px;
-            object-fit: cover;
-            height: 200px;
+            width: 160px;
         }
 
         h2 {
             text-align: center;
             color: #333;
             margin-bottom: 15px;
-            font-size: 26px;
+            font-size:18px;
             font-weight: 600;
         }
 
@@ -51,13 +49,7 @@
         }
 
         .info {
-            margin-bottom: 18px;
-        }
-
-        .divider {
-            height: 1px;
-            background: #e0e0e0;
-            margin: 30px 0;
+            margin-bottom: 14px;
         }
 
         .section h3 {
@@ -71,13 +63,13 @@
             text-align: center;
             font-size: 14px;
             color: #777;
-            margin-top: 35px;
+            margin-top: 15px;
         }
 
-        .hash {
+        #hash {
             font-size: 14px;
-            color: #888;
-            background: #f9f9f9;
+            color: #000;
+            background: #E4DBCF;
             padding: 12px;
             border-radius: 8px;
             margin-top: 20px;
@@ -132,9 +124,6 @@
             </span>
         </div>
     </div>
-
-    <div class="divider"></div>
-
     <div class="section">
         <h3>Remetente</h3>
         <div class="info"><span class="label">Nome:</span> <span class="value">${remetente_nome}</span></div>
@@ -151,7 +140,7 @@
         <div class="info"><span class="label">Conta:</span> <span class="value">${destinatario_conta}</span></div>
     </div>
 
-    <div class="hash">
+    <div id="hash">
         Hash de Transação: <span>${transaction_hash}</span>
     </div>
 
