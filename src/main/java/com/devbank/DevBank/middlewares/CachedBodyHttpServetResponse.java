@@ -11,7 +11,7 @@ public class CachedBodyHttpServetResponse extends HttpServletResponseWrapper {
     private final ByteArrayOutputStream cachedBody = new ByteArrayOutputStream();
     private final PrintWriter writer;
     private final HttpServletResponse originalResponse;
-    private boolean responseCommitted = false; // Evita escrita duplicada
+    private boolean responseCommitted = false;
 
     public CachedBodyHttpServetResponse(HttpServletResponse response) throws IOException {
         super(response);
@@ -30,12 +30,12 @@ public class CachedBodyHttpServetResponse extends HttpServletResponseWrapper {
     }
 
     public String getBody() {
-        writer.flush(); // Garante que tudo foi escrito antes de pegar os bytes
+        writer.flush();
         return cachedBody.toString();
     }
 
     public void copyBodyToResponse() throws IOException {
-        if (!responseCommitted) { // Evita escrita duplicada
+        if (!responseCommitted) {
             byte[] bodyBytes = cachedBody.toByteArray();
             originalResponse.getOutputStream().write(bodyBytes);
             originalResponse.getOutputStream().flush();
@@ -63,7 +63,7 @@ public class CachedBodyHttpServetResponse extends HttpServletResponseWrapper {
         @Override
         public void write(int b) throws IOException {
             cachedStream.write(b);
-            originalStream.write(b); // Escreve diretamente na resposta real
+            originalStream.write(b);
         }
     }
 }

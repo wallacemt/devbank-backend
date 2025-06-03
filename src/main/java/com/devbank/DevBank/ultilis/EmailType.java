@@ -4,5 +4,6 @@ package com.devbank.DevBank.ultilis;
 public enum EmailType {
     WELCOME,
     VERIFICATION_CODE,
-    SUSPECT_ACTIVITY
+    SUSPECT_ACTIVITY,
+    RECEIPT
 }

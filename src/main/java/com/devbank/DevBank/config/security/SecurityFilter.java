@@ -35,7 +35,11 @@ public class SecurityFilter extends OncePerRequestFilter {
             try {
                 authenticateUser(token);
             } catch (RuntimeException e) {
-                logger.error("Erro ao autenticar o token: {}", e.getMessage());
+                logger.error("Erro ao autenticar o token: " + e.getMessage());
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write("{\"error\": \"" + e.getMessage() + "\"}");
+                return;
             }
         }
         filterChain.doFilter(request, response);

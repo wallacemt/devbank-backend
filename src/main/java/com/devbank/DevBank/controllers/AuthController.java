@@ -41,7 +41,7 @@ public class AuthController {
         } catch (EmailAlreadyRegisteredException | CpfAlreadyRegisteredException e) {
             return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("error", "Error Interno do Servidor" + e.getMessage()));
+            return ResponseEntity.status(500).body(Map.of("error", "Error Interno do Servidor: " + e.getMessage()));
         }
     }
 

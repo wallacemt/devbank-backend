@@ -30,7 +30,7 @@ public class TokenService {
                     .withExpiresAt(expirationInstant)
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
-            throw new RuntimeException("erro ao gerar token jwt", exception);
+            throw new RuntimeException("Erro ao gerar token jwt", exception);
         }
     }
 

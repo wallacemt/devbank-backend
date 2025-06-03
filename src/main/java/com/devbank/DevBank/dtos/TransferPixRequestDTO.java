@@ -1,20 +1,17 @@
 package com.devbank.DevBank.dtos;
 
+import com.devbank.DevBank.entities.User.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserByKeyResponseDTO {
-    private UUID userId;
-    private String userName;
-    private String userCpf;
-    private UUID accountId;
-    private String referenceKey;
+public class TransferPixRequestDTO {
+    private Double amount;
+    private String reciveKey;
+    private String transactionPin;
 }

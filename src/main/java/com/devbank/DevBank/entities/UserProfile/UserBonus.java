@@ -22,6 +22,7 @@ public class UserBonus {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     @JsonBackReference

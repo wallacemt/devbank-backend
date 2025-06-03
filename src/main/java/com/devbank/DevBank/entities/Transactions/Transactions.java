@@ -45,12 +45,19 @@ public class Transactions {
     @Column(updatable = false)
     private LocalDateTime timestamp;
 
+    @Column(nullable = false, unique = true, length = 100)
+    private String hash;
 
-    public Transactions(Account senderAccount, Account receiverAccount, Double amount, TransactionStatus status, TransactionType type) {
+    @Column(nullable = false)
+    private String reciveKey;
+
+    public Transactions(Account senderAccount, Account receiverAccount, Double amount, TransactionStatus status, TransactionType type, LocalDateTime timestamp, String reciveKey) {
         this.senderAccount = senderAccount;
         this.receiverAccount = receiverAccount;
         this.amount = amount;
         this.status = status;
         this.type = type;
+        this.timestamp = timestamp;
+        this.reciveKey = reciveKey;
     }
 }

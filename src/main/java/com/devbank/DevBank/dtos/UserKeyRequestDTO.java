@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserKeyRequestDTO {
+public class    UserKeyRequestDTO {
     private String userKey;
 }

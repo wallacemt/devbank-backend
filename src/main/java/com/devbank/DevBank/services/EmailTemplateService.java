@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Map;
+
 import org.springframework.core.io.ClassPathResource;
+
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -13,11 +15,12 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class EmailTemplateService {
 
-     public String getTemplate(EmailType type, Map<String, String> variables) {
+    public String getTemplate(EmailType type, Map<String, String> variables) {
         String templatePath = switch (type) {
             case WELCOME -> "templates/welcome.html";
             case VERIFICATION_CODE -> "templates/verification_code.html";
             case SUSPECT_ACTIVITY -> "templates/suspect_activity.html";
+            case RECEIPT -> "templates/recipient.html";
         };
 
         try (InputStream inputStream = new ClassPathResource(templatePath).getInputStream()) {
