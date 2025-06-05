@@ -1,9 +1,11 @@
 package com.devbank.DevBank.services;
 
+import com.devbank.DevBank.dtos.TransactionsResponseDTO;
 import com.devbank.DevBank.dtos.TransferPixRequestDTO;
 import com.devbank.DevBank.dtos.UserByKeyResponseDTO;
 import com.devbank.DevBank.dtos.UserKeyRequestDTO;
 import com.devbank.DevBank.entities.Account.Account;
+import com.devbank.DevBank.entities.Transactions.TransactionDirection;
 import com.devbank.DevBank.entities.Transactions.TransactionStatus;
 import com.devbank.DevBank.entities.Transactions.TransactionType;
 import com.devbank.DevBank.entities.Transactions.Transactions;
@@ -15,10 +17,13 @@ import com.devbank.DevBank.repositories.*;
 import com.devbank.DevBank.ultilis.TransactionHashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
@@ -138,7 +143,34 @@ public class TransactionsService {
         if (transaction.isEmpty()) {
             throw new TransactionNotFountExeception("Transação não encontrada!");
         }
-
         return recipientService.generateReceipt(transaction.get());
+    }
+
+    public Page<TransactionsResponseDTO> getTransactionHistory(
+            LocalDate date,
+            User user,
+            Pageable pageable) {
+
+        Account account = accountRepository.findByUser(user);
+
+        LocalDateTime start = date.atStartOfDay();
+        LocalDateTime end = date.plusDays(1).atStartOfDay().minusNanos(1);
+
+        return transitionsRepository
+                .findByAccountAndDate(account, start, end, pageable)
+                .map(tx -> {
+                    boolean sent = tx.getSenderAccount().getUuid().equals(account.getUuid());
+                    return new TransactionsResponseDTO(
+                            tx.getId(),
+                            tx.getAmount(),
+                            tx.getStatus(),
+                            sent ? tx.getReceiverAccount().getUser().getName() : tx.getSenderAccount().getUser().getName(),
+                            tx.getTimestamp(),
+                            tx.getReceiverAccount().getUser().getId(),
+                            tx.getSenderAccount().getUser().getId(),
+                            tx.getType(),
+                            sent ? TransactionDirection.SENT : TransactionDirection.RECEIVED
+                    );
+                });
     }
 }
