@@ -1,8 +1,7 @@
-package com.devbank.DevBank.dtos;
+package com.devbank.DevBank.dtos.response;
 
 import com.devbank.DevBank.entities.Account.Account;
 import com.devbank.DevBank.entities.User.User;
-import com.devbank.DevBank.entities.UserProfile.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserResoponseDTO {
     private UUID id;
     private String name;
     private String email;
@@ -22,7 +21,7 @@ public class UserDTO {
     private AccountResponseDTO account;
     private UserProfileResponseDTO profile;
 
-    public UserDTO(User user, Account account, UserProfileResponseDTO profile) {
+    public UserResoponseDTO(User user, Account account, UserProfileResponseDTO profile) {
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
@@ -31,7 +30,7 @@ public class UserDTO {
         this.profile = profile;
     }
 
-    public UserDTO(User user, Account account) {
+    public UserResoponseDTO(User user, Account account) {
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();

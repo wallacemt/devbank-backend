@@ -1,9 +1,9 @@
 package com.devbank.DevBank.services;
 
-import com.devbank.DevBank.dtos.TransactionsResponseDTO;
-import com.devbank.DevBank.dtos.TransferPixRequestDTO;
-import com.devbank.DevBank.dtos.UserByKeyResponseDTO;
-import com.devbank.DevBank.dtos.UserKeyRequestDTO;
+import com.devbank.DevBank.dtos.response.TransactionsResponseDTO;
+import com.devbank.DevBank.dtos.request.TransferPixRequestDTO;
+import com.devbank.DevBank.dtos.response.UserByKeyResponseDTO;
+import com.devbank.DevBank.dtos.request.UserKeyRequestDTO;
 import com.devbank.DevBank.entities.Account.Account;
 import com.devbank.DevBank.entities.Transactions.TransactionDirection;
 import com.devbank.DevBank.entities.Transactions.TransactionStatus;

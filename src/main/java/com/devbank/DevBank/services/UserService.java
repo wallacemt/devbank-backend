@@ -1,7 +1,7 @@
 package com.devbank.DevBank.services;
 
-import com.devbank.DevBank.dtos.UserDTO;
-import com.devbank.DevBank.dtos.UserProfileResponseDTO;
+import com.devbank.DevBank.dtos.response.UserResoponseDTO;
+import com.devbank.DevBank.dtos.response.UserProfileResponseDTO;
 import com.devbank.DevBank.entities.Account.Account;
 import com.devbank.DevBank.entities.User.User;
 import com.devbank.DevBank.entities.UserProfile.UserBonus;
@@ -42,15 +42,15 @@ public class UserService {
     @Qualifier("passwordEncoderV2")
     private PasswordEncoder passwordEncoderV2;
 
-    public UserDTO getUser(User user) {
+    public UserResoponseDTO getUser(User user) {
         Optional<User> userOpt = userRepository.findById(user.getId());
         Account account = accountRepository.findByUser(user);
 
         if (userOpt.isPresent() && account != null) {
             UserProfileResponseDTO profile = profileService.getUserProfile(user);
             return (profile != null)
-                    ? new UserDTO(userOpt.get(), account, profile)
-                    : new UserDTO(userOpt.get(), account);
+                    ? new UserResoponseDTO(userOpt.get(), account, profile)
+                    : new UserResoponseDTO(userOpt.get(), account);
         }
 
         return null;

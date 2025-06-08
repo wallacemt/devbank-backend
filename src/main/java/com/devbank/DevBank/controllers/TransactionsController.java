@@ -1,12 +1,9 @@
 package com.devbank.DevBank.controllers;
 
 
-import com.devbank.DevBank.dtos.TransactionsResponseDTO;
-import com.devbank.DevBank.entities.Transactions.Transactions;
+import com.devbank.DevBank.dtos.response.TransactionsResponseDTO;
 import com.devbank.DevBank.entities.User.User;
 import com.devbank.DevBank.exeptions.TransactionNotFountExeception;
-import com.devbank.DevBank.repositories.TransitionsRepository;
-import com.devbank.DevBank.services.ReceiptService;
 import com.devbank.DevBank.services.TransactionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,12 +12,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.Map;

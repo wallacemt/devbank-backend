@@ -1,4 +1,4 @@
-package com.devbank.DevBank.dtos;
+package com.devbank.DevBank.dtos.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;

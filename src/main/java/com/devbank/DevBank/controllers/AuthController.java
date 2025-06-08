@@ -1,14 +1,13 @@
 package com.devbank.DevBank.controllers;
 
-import com.devbank.DevBank.dtos.EmailOrCpfVerificationDTO;
-import com.devbank.DevBank.dtos.LoginDTO;
-import com.devbank.DevBank.dtos.LoginVerifyDTO;
-import com.devbank.DevBank.dtos.UserRegisterDTO;
+import com.devbank.DevBank.dtos.request.EmailOrCpfVerificationDTO;
+import com.devbank.DevBank.dtos.request.LoginDTO;
+import com.devbank.DevBank.dtos.request.LoginVerifyDTO;
+import com.devbank.DevBank.dtos.request.UserRegisterDTO;
 import com.devbank.DevBank.exeptions.*;
 import com.devbank.DevBank.services.EmailVerifyService;
 import com.devbank.DevBank.services.UserAuthService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.logging.log4j.util.InternalException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;

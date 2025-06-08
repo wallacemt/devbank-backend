@@ -1,10 +1,10 @@
 package com.devbank.DevBank.services;
 
 import com.devbank.DevBank.config.security.TokenService;
-import com.devbank.DevBank.dtos.EmailOrCpfVerificationDTO;
-import com.devbank.DevBank.dtos.LoginDTO;
-import com.devbank.DevBank.dtos.LoginVerifyDTO;
-import com.devbank.DevBank.dtos.UserRegisterDTO;
+import com.devbank.DevBank.dtos.request.EmailOrCpfVerificationDTO;
+import com.devbank.DevBank.dtos.request.LoginDTO;
+import com.devbank.DevBank.dtos.request.LoginVerifyDTO;
+import com.devbank.DevBank.dtos.request.UserRegisterDTO;
 import com.devbank.DevBank.entities.Account.Account;
 import com.devbank.DevBank.entities.User.User;
 import com.devbank.DevBank.entities.UserBlocked.UserBlocked;
@@ -13,7 +13,6 @@ import com.devbank.DevBank.entities.UserKeys.UserKeys;
 import com.devbank.DevBank.exeptions.*;
 import com.devbank.DevBank.repositories.*;
 import com.devbank.DevBank.ultilis.EmailType;
-import org.apache.logging.log4j.util.InternalException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;

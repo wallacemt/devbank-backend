@@ -1,7 +1,7 @@
 package com.devbank.DevBank.controllers;
 
-import com.devbank.DevBank.dtos.TransferPixRequestDTO;
-import com.devbank.DevBank.dtos.UserKeyRequestDTO;
+import com.devbank.DevBank.dtos.request.TransferPixRequestDTO;
+import com.devbank.DevBank.dtos.request.UserKeyRequestDTO;
 import com.devbank.DevBank.entities.User.User;
 import com.devbank.DevBank.exeptions.*;
 import com.devbank.DevBank.services.TransactionsService;

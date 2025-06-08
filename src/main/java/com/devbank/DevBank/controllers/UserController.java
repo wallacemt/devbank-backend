@@ -1,16 +1,12 @@
 package com.devbank.DevBank.controllers;
 
-import com.devbank.DevBank.dtos.UserDTO;
-import com.devbank.DevBank.dtos.UserProfileRequestDTO;
-import com.devbank.DevBank.dtos.UserRegisterDTO;
+import com.devbank.DevBank.dtos.response.UserProfileRequestDTO;
 import com.devbank.DevBank.entities.User.User;
-import com.devbank.DevBank.entities.UserProfile.UserProfile;
 import com.devbank.DevBank.exeptions.BonusHasReclaimException;
 import com.devbank.DevBank.exeptions.IncompleteProfileException;
 import com.devbank.DevBank.exeptions.PerfilAlreadyRegisteredException;
 import com.devbank.DevBank.services.ProfileService;
 import com.devbank.DevBank.services.UserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

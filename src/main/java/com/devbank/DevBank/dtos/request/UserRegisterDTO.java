@@ -1,4 +1,4 @@
-package com.devbank.DevBank.dtos;
+package com.devbank.DevBank.dtos.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

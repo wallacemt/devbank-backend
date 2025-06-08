@@ -1,7 +1,7 @@
 package com.devbank.DevBank.services;
 
-import com.devbank.DevBank.dtos.UserProfileRequestDTO;
-import com.devbank.DevBank.dtos.UserProfileResponseDTO;
+import com.devbank.DevBank.dtos.response.UserProfileRequestDTO;
+import com.devbank.DevBank.dtos.response.UserProfileResponseDTO;
 import com.devbank.DevBank.entities.User.User;
 import com.devbank.DevBank.entities.UserAddress.UserAddress;
 import com.devbank.DevBank.entities.UserProfile.UserProfile;

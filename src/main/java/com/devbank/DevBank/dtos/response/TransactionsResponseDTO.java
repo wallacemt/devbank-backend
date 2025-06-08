@@ -1,4 +1,4 @@
-package com.devbank.DevBank.dtos;
+package com.devbank.DevBank.dtos.response;
 
 import com.devbank.DevBank.entities.Transactions.TransactionDirection;
 import com.devbank.DevBank.entities.Transactions.TransactionStatus;

@@ -1,12 +1,10 @@
-package com.devbank.DevBank.dtos;
+package com.devbank.DevBank.dtos.response;
 
 import com.devbank.DevBank.entities.UserAddress.UserAddress;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
 
 @Getter
 @Setter

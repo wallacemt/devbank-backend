@@ -1,6 +1,5 @@
-package com.devbank.DevBank.dtos;
+package com.devbank.DevBank.dtos.request;
 
-import com.devbank.DevBank.entities.User.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
