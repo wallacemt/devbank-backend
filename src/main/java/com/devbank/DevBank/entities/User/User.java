@@ -1,5 +1,7 @@
 package com.devbank.DevBank.entities.User;
 
+import com.devbank.DevBank.entities.Account.Account;
+import com.devbank.DevBank.entities.Stash.Stash;
 import com.devbank.DevBank.entities.UserProfile.UserBonus;
 import com.devbank.DevBank.entities.UserProfile.UserProfile;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -58,6 +60,10 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user")
     @JsonManagedReference
     private UserBonus userBonus;
+
+
+    @OneToOne(mappedBy = "user")
+    private Account account;
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
