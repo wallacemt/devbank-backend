@@ -140,7 +140,7 @@ Authorization: Bearer <seu_token>
 ### Diagrama Do Banco:
 
 <div align='center'>
-   <img align='center' height='750' width='800' style="border-radius:1.5rem"  title='Junit' alt='Junit' src='https://res.cloudinary.com/dg9hqvlas/image/upload/v1749675520/Untitled33_hi9zz8.png' /> &nbsp;
+   <img align='center' height='750'  style="border-radius:1.5rem"  title='DB Diagrama' alt='Diagrama' src='https://res.cloudinary.com/dg9hqvlas/image/upload/v1749687344/Untitled-cy_xomtjh.png' /> &nbsp;
 </div>
 
 ## 💡 Propósito
@@ -180,5 +180,3 @@ Ficou interessado em contribuir? Faça um **fork** do repositório, crie uma **b
 # 📜 Licença
 
 `Este projeto está sob a licença MIT.`
-
-poderia modificar esse readme que fiz do front end e adpatar para o backend, trazendo as principais informações, e adicionar uma area da imagem do diagrama do banco de dados.
