@@ -67,7 +67,7 @@ public class TransactionsService {
         Account accountUser = accountRepository.findByUser(user);
 
         if (accountUser.getUuid().equals(userKeys.get().getAccount().getUuid())) {
-            return null;
+            throw new UserByKeyNotFound("Chave Pix não encontrada!");
         }
         return new UserByKeyResponseDTO(
                 userOpt.get().getId(),
