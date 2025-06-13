@@ -10,6 +10,8 @@ import com.devbank.DevBank.repositories.AccountRepository;
 import com.devbank.DevBank.repositories.StashRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -44,11 +46,8 @@ public class StashService {
     }
 
 
-    public List<StashResponseDTO> findAll(User user) {
-        return stashRepository.findByUser(user)
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+    public Page<StashResponseDTO> findAll(User user, Pageable pageable) {
+        return stashRepository.findByUser(user, pageable).map(this::toDTO);
     }
 
     public StashResponseDTO findById(UUID id, User user) {

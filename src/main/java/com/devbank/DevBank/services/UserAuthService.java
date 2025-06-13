@@ -6,6 +6,7 @@ import com.devbank.DevBank.dtos.request.LoginDTO;
 import com.devbank.DevBank.dtos.request.LoginVerifyDTO;
 import com.devbank.DevBank.dtos.request.UserRegisterDTO;
 import com.devbank.DevBank.entities.Account.Account;
+import com.devbank.DevBank.entities.Stash.Stash;
 import com.devbank.DevBank.entities.User.User;
 import com.devbank.DevBank.entities.UserBlocked.UserBlocked;
 import com.devbank.DevBank.entities.UserKeys.UserKeyType;
@@ -31,6 +32,9 @@ public class UserAuthService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private StashRepository stashRepository;
 
     @Autowired
     private EmailService emailService;
@@ -81,6 +85,13 @@ public class UserAuthService {
 
         Map<String, String> variables = new HashMap<>();
         variables.put("nome", newUser.getName());
+
+        Stash stash = new Stash();
+        stash.setStashName("Saldo de Emergência");
+        stash.setUser(newUser);
+        stash.setDescription("Guarde Saldos de emergência aqui.");
+
+        stashRepository.save(stash);
 
         emailService.enviarEmailHtml(
                 newUser.getEmail(),

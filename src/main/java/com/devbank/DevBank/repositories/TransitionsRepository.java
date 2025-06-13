@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -28,4 +29,12 @@ public interface TransitionsRepository extends JpaRepository<Transactions, UUID>
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
             Pageable pageable);
+
+    @Query("""
+                SELECT t FROM Transactions t 
+                WHERE (t.senderAccount.user.id = :userId OR t.receiverAccount.user.id = :userId)
+                AND t.timestamp >= :startDate
+            """)
+    List<Transactions> findLastSixMonthsTransactions(UUID userId, LocalDateTime startDate);
+
 }

@@ -8,11 +8,13 @@ import com.devbank.DevBank.services.StashService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -34,9 +36,9 @@ public class StashController {
     }
 
     @GetMapping
-    public ResponseEntity<?> findAll(@AuthenticationPrincipal User user) {
+    public ResponseEntity<?> findAll(@AuthenticationPrincipal User user, @PageableDefault(size = 10, sort = "lastMovimentation", direction = Sort.Direction.DESC) Pageable pageable) {
         try {
-            return ResponseEntity.ok(stashService.findAll(user));
+            return ResponseEntity.ok(stashService.findAll(user, pageable));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
         }
