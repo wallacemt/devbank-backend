@@ -4,5 +4,6 @@ public enum TransactionType {
     PIX,
     TRANSFER,
     DEPOSIT,
-    PAYMENT;
+    PAYMENT,
+    STASH;
 }

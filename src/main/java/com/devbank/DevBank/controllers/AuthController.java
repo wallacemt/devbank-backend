@@ -45,19 +45,22 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginDTO data, HttpServletRequest request) {
+    public ResponseEntity<?> loginUser(@RequestBody LoginDTO data,
+                                       HttpServletRequest request,
+                                       @RequestParam(name = "twoFa", defaultValue = "true") boolean twoFa) {
         try {
             String clientIp = request.getRemoteAddr();
-            Map<String, String> response = userAuthService.loginUser(data, clientIp);
-            return ResponseEntity.status(200).body(Map.of("message", response.get("message"), "email", response.get("email")));
+            Map<String, String> response = userAuthService.loginUser(data, clientIp, twoFa);
+            return ResponseEntity.ok(response);
         } catch (AccountBlockedException | IncorrectPasswordException e) {
             return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(404).body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("error", "Error Interno do Servidor: " + e.getMessage()));
+            return ResponseEntity.status(500).body(Map.of("error", "Erro interno do servidor: " + e.getMessage()));
         }
     }
+
 
     @PostMapping("/login/2fa")
     public ResponseEntity<?> loginUser2fa(@RequestBody LoginVerifyDTO data) {

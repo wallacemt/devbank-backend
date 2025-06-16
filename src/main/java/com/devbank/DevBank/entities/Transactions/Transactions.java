@@ -26,7 +26,7 @@ public class Transactions {
     private Account senderAccount;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_account_id", nullable = false)
+    @JoinColumn(name = "receiver_account_id")
     private Account receiverAccount;
 
     @Min(0)

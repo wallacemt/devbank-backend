@@ -114,7 +114,7 @@ public class UserAuthService {
     }
 
 
-    public Map<String, String> loginUser(LoginDTO data, String ipAddress) {
+    public Map<String, String> loginUser(LoginDTO data, String ipAddress, boolean twoFa) {
         User user = userRepository.findByEmailOrCpf(data.getEmailOrCpf(), data.getEmailOrCpf())
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado, Email Ou Cpf Incorreto!"));
 
@@ -168,15 +168,23 @@ public class UserAuthService {
 
         tentativas.remove(user.getEmail());
 
+        if (!twoFa) {
+            String tokenJwt = tokenService.generateToken(user);
+            Map<String, String> response = new HashMap<>();
+            response.put("token", tokenJwt);
+            String[] names = user.getName().split(" ");
+            String firstName = names[0];
+            String lastName = names[names.length - 1];
+            response.put("message", "Bem-vindo(a), " + firstName + " " + lastName + "!");
+            return response;
+        }
+
         emailVerifyService.generate2FACode(user);
-
-
         return Map.of("message", "Código de verificação enviado", "email", user.getEmail());
     }
 
 
     public Map<String, String> verifyCodeAndFinishLogin(LoginVerifyDTO data) {
-
         User user = userRepository.findByEmailOrCpf(data.getEmailOrCpf(), data.getEmailOrCpf())
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
         emailVerifyService.validCode(user.getEmail(), data.getToken());
