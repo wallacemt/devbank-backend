@@ -61,6 +61,8 @@ public class User implements UserDetails {
     @JsonManagedReference
     private UserBonus userBonus;
 
+    @Column(name = "pre_approved_limit")
+    private Double preApprovedLimit;
 
     @OneToOne(mappedBy = "user")
     private Account account;

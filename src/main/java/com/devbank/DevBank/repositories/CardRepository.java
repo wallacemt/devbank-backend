@@ -1,0 +1,14 @@
+package com.devbank.DevBank.repositories;
+
+import com.devbank.DevBank.entities.Card.Card;
+import com.devbank.DevBank.entities.User.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.UUID;
+
+@Repository
+public interface CardRepository extends JpaRepository<Card, UUID> {
+    List<Card> findByUser(User user);
+}
