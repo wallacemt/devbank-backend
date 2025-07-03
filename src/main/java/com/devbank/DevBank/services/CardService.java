@@ -51,7 +51,8 @@ public class CardService {
         Card card = new Card();
         card.setUser(user);
         card.setCardHoldName(user.getName());
-        card.setExpiryDate(LocalDate.now().plusYears(5).plusMonths(4).plusDays(10).toString());
+        LocalDate expiry = LocalDate.now().plusYears(5).plusMonths(4).plusDays(10);
+        card.setExpiryDate(String.format("%02d/%d", expiry.getMonthValue(), expiry.getYear()));
         card.setDayExpiryFature(expiryDate);
         card.setCardNumber(cardNumber);
         card.setCardTitle("DevCard");
@@ -84,49 +85,6 @@ public class CardService {
                 .toList();
     }
 
-    public CardResponseDTO updateCard(UUID id, Map<String, Object> updates, User user) {
-        Card card = cardRepository.findById(id).filter(c -> c.getUser().getId().equals(user.getId())).orElseThrow(() -> new EntityNotFoundException("Cartão não encontrado"));
-        boolean hasChanges = false;
-        for (Map.Entry<String, Object> entry : updates.entrySet()) {
-            String campo = entry.getKey();
-            Object valor = entry.getValue();
-            switch (campo) {
-                case "number":
-                    String number = (String) valor;
-                    if (!number.isEmpty() && !number.equals(card.getCardNumber())) {
-                        card.setCardNumber(number);
-                        hasChanges = true;
-                    }
-                    break;
-                case "cardTitle":
-                    String title = (String) valor;
-                    if (!title.isEmpty() && !title.equals(card.getCardTitle())) {
-                        card.setCardNumber(title);
-                        hasChanges = true;
-                    }
-                    break;
-                case "expiryDate":
-                    String expiryDate = (String) valor;
-                    if (!expiryDate.isEmpty() && !expiryDate.equals(card.getExpiryDate())) {
-                        card.setExpiryDate(expiryDate);
-                        hasChanges = true;
-                    }
-                    break;
-                case "cvv":
-                    String newCvv = cvvEncryptionService.encrypt(valor.toString());
-                    if (!updates.isEmpty() && !newCvv.equals(card.getEncryptedCvv())) {
-                        card.setEncryptedCvv(newCvv);
-                        hasChanges = true;
-                    }
-                default:
-                    throw new IllegalArgumentException("Campo inválido '" + campo + "'");
-            }
-        }
-        if (hasChanges) {
-            cardRepository.save(card);
-        }
-        return toCardResponse(card);
-    }
 
     public void deleteCard(UUID id, User user) {
         Card card = cardRepository.findById(id).filter(c -> c.getUser().getId().equals(user.getId())).orElseThrow(() -> new EntityNotFoundException("Cartão não encontrado"));

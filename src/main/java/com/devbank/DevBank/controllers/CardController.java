@@ -61,16 +61,7 @@ public class CardController {
         return ResponseEntity.ok(cardService.getUserCards(user));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateCard(@PathVariable UUID id, @RequestBody Map<String, Object> requestDTO, @AuthenticationPrincipal User user) {
-        try {
-            return ResponseEntity.ok(cardService.updateCard(id, requestDTO, user));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(404).body(Map.of("error", e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
-        }
-    }
+  
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCard(@PathVariable UUID id, @AuthenticationPrincipal User user) {
